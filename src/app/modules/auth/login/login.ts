@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { signInWithEmailAndPassword } from '@angular/fire/auth';
 import { FormsModule } from '@angular/forms';
 import { AuthRepository } from '../../../repositories/auth.repository';
 import { AuthService } from '../../../services/auth.service';
-import { Auth, User, user } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-login-component',
@@ -36,17 +36,21 @@ export class LoginComponent {
 
   isError = false;
 
-  private auth: Auth = inject(Auth);
-  user$ = user(this.auth);
+  // private auth: Auth = inject(Auth);
+  // user$ = user(this.auth);
   userSubscription: Subscription;
-  constructor(private _router: Router){
-    this.userSubscription = this.user$.subscribe((aUser: User | null) => {
-      //handle user state changes here. Note, that user will be null if there is no currently logged in user.
-   console.log(aUser);
-   if(aUser?.uid){
-     this._router.navigate(['/home']);
-   }
-  })
+  constructor(private _router: Router, private authFirebase: AngularFireAuth){
+  //   this.userSubscription = this.user$.subscribe((aUser: User | null) => {
+  //     //handle user state changes here. Note, that user will be null if there is no currently logged in user.
+  //  console.log(aUser);
+  //  if(aUser?.uid){
+  //    this._router.navigate(['/home']);
+  //  }
+    this.authFirebase.authState.subscribe((user) => {
+      if(user?.uid){
+           this._router.navigate(['/home']);
+        }
+    })
   }
 
   isValidEmail(s: string) {
@@ -68,14 +72,14 @@ export class LoginComponent {
       return;
     }
 
-    signInWithEmailAndPassword(this.auth,this.loginInfo.email, this.loginInfo.password)
-    .then((info) => {
-      this.isError = false;
-      this._router.navigate(['/home']);
-    })
-    .catch(() => {
-      this.isError = true;
-    })
+    // signInWithEmailAndPassword(this.auth,this.loginInfo.email, this.loginInfo.password)
+    // .then((info) => {
+    //   this.isError = false;
+    //   this._router.navigate(['/home']);
+    // })
+    // .catch(() => {
+    //   this.isError = true;
+    // })
 
   }
   

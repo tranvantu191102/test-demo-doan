@@ -1,16 +1,19 @@
 <div class="w-full h-screen p-10">
   <h1 class="text-center mb-5 font-bold text-2xl">Thiếp lập thông tin</h1>
   <div
-    class="w-full max-w-[900px] h-[calc(100%-40px)] bg-blue-100 rounded-md m-auto"
+    class="w-full max-w-[900px] h-fit bg-blue-100 rounded-md m-auto pb-10"
   >
     @if (isRunning) {
 
     <div class="px-6 pt-10">
-        <div class="text-center text-xl font-bold text-black">
-            {{dateNow | date: 'dd'}}/{{dateNow | date:'MM'}}/{{dateNow | date: 'yyyy'}}
-        </div>
+      <div class="text-center text-xl font-bold text-black">
+        {{dateNow | date: 'dd'}}/{{dateNow | date:'MM'}}/{{dateNow | date:
+        'yyyy'}}
+      </div>
       <div>
-        <div class="font-medium leading-6 text-gray-900 text-lg my-2 flex items-center gap-2">
+        <div
+          class="font-medium leading-6 text-gray-900 text-lg my-2 flex items-center gap-2"
+        >
           <span>Nhiệt độ thiết lập</span>
           <img
             src="/assets/images/temperature.png"
@@ -21,7 +24,9 @@
         <span>100 C</span>
       </div>
       <div>
-        <div class="font-medium leading-6 text-gray-900 text-lg my-2 flex items-center gap-2">
+        <div
+          class="font-medium leading-6 text-gray-900 text-lg my-2 flex items-center gap-2"
+        >
           <span> Thời gian thiết lập</span>
           <img
             src="/assets/images/chronometer.png"
@@ -32,7 +37,9 @@
         <span>100 phút</span>
       </div>
       <div>
-        <div class="font-medium leading-6 text-gray-900 text-lg my-2 flex items-center gap-2">
+        <div
+          class="font-medium leading-6 text-gray-900 text-lg my-2 flex items-center gap-2"
+        >
           <span>Nhiệt độ hiện tại</span>
           <img
             src="/assets/images/temperature.png"
@@ -43,7 +50,9 @@
         <span>100 C</span>
       </div>
       <div>
-        <div class="font-medium leading-6 text-gray-900 text-lg my-2 flex items-center gap-2">
+        <div
+          class="font-medium leading-6 text-gray-900 text-lg my-2 flex items-center gap-2"
+        >
           <span>Thời gian còn lại</span>
           <img
             src="/assets/images/stopwatch.png"
@@ -65,62 +74,98 @@
     </div>
     }@else {
     <form class="space-y-6 px-6 pt-10" action="#" method="POST">
-      <div>
-        <img
-          src="/assets/images/temperature.png"
-          alt=""
-          class="w-10 h-10 mb-3"
-        />
-        <label
-          for="text"
-          class="block font-medium leading-6 text-gray-900 text-lg"
-          >Nhiệt độ</label
-        >
-        <div class="mt-2">
-          <input
-            id="text"
-            name="text"
-            type="number"
-            autocomplete="text"
-            required
-            class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-        </div>
-      </div>
-
-      <div>
-        <img
-          src="/assets/images/chronometer.png"
-          alt=""
-          class="w-10 h-10 mb-3"
-        />
-        <div class="flex items-center justify-between">
-          <label
-            for="time"
-            class="block font-medium leading-6 text-gray-900 text-lg"
-            >Thời gian</label
-          >
-        </div>
-        <div class="mt-2">
-          <input
-            id=""
-            name="time"
-            type="number"
-            autocomplete="current-time"
-            required
-            class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-        </div>
-      </div>
-
-      <div class="!mt-32">
+      <div class="!mt-0">
         <button
           type="submit"
+          (click)="onStart($event)"
           class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           Bắt đầu
         </button>
       </div>
+      <div class="w-full flex flex-col gap-0">
+      <div
+        *ngFor="let setting of settings; let index = index; let last = last; trackBy: trackByFunc"
+        class="w-full gap-0"
+      >
+      <div class="flex items-end">
+        <div class=" mr-6 w-[40%]">
+          <div class="flex items-center justify-between">
+            <label
+              for="text"
+              class="block font-medium leading-6 text-gray-900 text-lg"
+              >Nhiệt độ giai đoạn {{index + 1}}</label
+            >
+            <img
+              src="/assets/images/celcius.png"
+              alt=""
+              class="w-10 h-10 mb-1"
+            />
+          </div>
+
+          <div class="mt-1">
+            <input
+              id="text"
+              name="text"
+              type="number"
+              autocomplete="text"
+              [(ngModel)]="setting.temperature"
+              required
+              class="block text-lg w-full h-12 rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            />
+          </div>
+          
+        </div>
+
+        <div class="mr-6 w-[40%]">
+          <div class="flex items-center justify-between">
+            <label
+              for="time"
+              class="block font-medium leading-6 text-gray-900 text-lg"
+              >Thời gian giai đoạn {{index + 1}}</label
+            >
+            <img
+              src="/assets/images/chronometer.png"
+              alt=""
+              class="w-10 h-10 mb-1"
+            />
+          </div>
+
+          <div class="mt-1">
+            <input
+              id=""
+              name="time"
+              type="number"
+              autocomplete="current-time"
+              [(ngModel)]="setting.time"
+              required
+              class="block w-full h-12 rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            />
+          </div>
+        </div>
+        <div class="w-[15%]" *ngIf="index > 0">
+          <button class="px-10 py-2 bg-red-400 text-white rounded-lg"
+          (click)="removeItem(setting)"
+          >Xoá</button>
+        </div>
+      </div>
+
+        <div *ngIf="settings.length > 1 && !last" class="col-span-2">
+          <img src="assets/images/down-arrow.png" alt="" class="w-10 h-10 mx-auto">
+        </div>
+      </div>
+    </div>
+
+      <div class="!mt-8 mx-auto">
+        <button
+          (click)="onAddSetting()"
+          class="w-32 mx-auto text-sm flex justify-center rounded-md bg-indigo-600 px-3 py-3  font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          Thêm thiết lập
+        </button>
+      </div>
+
+   
     </form>
     }
   </div>
