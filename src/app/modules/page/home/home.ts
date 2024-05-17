@@ -14,4 +14,5 @@ export class HomeComponent {
     isRunning = true;
 
     dateNow = new Date()
+    
 }
