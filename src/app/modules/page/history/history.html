@@ -1,0 +1,51 @@
+<div class="p-10">
+  <h1 class="text-center text-2xl font-bold">Lịch sử</h1>
+
+  <table
+    class="w-full mt-10 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+  >
+    <thead
+      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+    >
+      <tr>
+        <th scope="col" class="px-6 py-3">Ngày</th>
+        <th scope="col" class="px-6 py-3">Nhiệt độ</th>
+        <th scope="col" class="px-6 py-3">Thời gian</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+        *ngFor="let data of dataSource"
+      >
+        <th
+          scope="row"
+          class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
+          {{data.startedAt | date: 'dd'}}/{{data.startedAt |
+          date:'MM'}}/{{data.startedAt | date: 'yyyy'}}
+        </th>
+        <td class="px-6 py-4">
+          @if (data.settings.length === 1) {
+          <p>{{data.settings[0].temperature}} °C</p>
+          }@else {
+          <div *ngFor="let setting of data.settings; let index = index">
+            <p class="text-justify mb-1">
+              Giai đoạn {{index + 1}} : {{setting.temperature}} °C
+            </p>
+          </div>
+          }
+        </td>
+        <td class="px-6 py-4">
+          @if (data.settings.length === 1) {
+          <p>{{data.settings[0].time}} phút</p>
+          }@else {
+          <div *ngFor="let setting of data.settings; let index = index">
+            <p>  Giai đoạn {{index + 1}} : {{setting.time}} phút</p>
+          </div>
+          }
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

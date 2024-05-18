@@ -1,0 +1,169 @@
+<div class="px-6 pt-10">
+  @if (settings.length > 0) {
+  <div class="text-center text-xl font-bold text-black">
+    {{dateNow | date: 'dd'}}/{{dateNow | date:'MM'}}/{{dateNow | date: 'yyyy'}}
+  </div>
+
+  <ng-container *ngIf="settings.length > 1">
+    <ol
+      class="mt-5 flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base"
+    >
+      <li
+        *ngFor="let setting of settings; let index = index"
+        class="flex md:w-full items-center sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700"
+        [ngClass]="{'text-blue-600 dark:text-blue-500' : setting.isFinish}"
+      >
+        <span
+          class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500"
+        >
+          <svg
+            class="w-3.5 h-3.5 sm:w-4 sm:h-4 me-2.5 shrink-0"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"
+            />
+          </svg>
+          <span class="hidden sm:inline-flex sm:ms-2 text-nowrap">
+            Giai đoạn {{index + 1}}
+            <span
+              *ngIf="currentSettingIndex === index"
+              class="text-green-500 ml-1"
+              >(Hiện tại)</span
+            >
+          </span>
+        </span>
+      </li>
+    </ol>
+  </ng-container>
+
+  <div class="grid grid-cols-2 gap-6 mt-10" *ngIf="currentSetting">
+    <div
+      class="bg-blue-100 rounded-xl flex flex-col items-center justify-center py-3"
+    >
+      <div
+        class="font-medium leading-6 text-gray-900 text-lg my-2 flex items-center gap-2"
+      >
+        <span>Nhiệt độ thiết lập</span>
+        <img src="/assets/images/celcius.png" alt="" class="w-10 h-10 mb-3" />
+      </div>
+      <span class="text-xl font-bold text-gray-900"
+        >{{currentSetting?.temperature}} °C</span
+      >
+    </div>
+    <div
+      class="bg-blue-100 rounded-xl flex flex-col items-center justify-center py-3"
+    >
+      <div
+        class="font-medium leading-6 text-gray-900 text-lg my-2 flex items-center gap-2"
+      >
+        <span> Thời gian thiết lập</span>
+        <img
+          src="/assets/images/chronometer.png"
+          alt=""
+          class="w-10 h-10 mb-3"
+        />
+      </div>
+      <span class="text-xl font-bold text-gray-900"
+        >{{currentSetting?.time}} phút</span
+      >
+    </div>
+    <div
+      class="bg-blue-100 rounded-xl flex flex-col items-center justify-center py-3"
+    >
+      <div
+        class="font-medium leading-6 text-gray-900 text-lg my-2 flex items-center gap-2"
+      >
+        <span>Nhiệt độ hiện tại</span>
+        <img src="/assets/images/celcius.png" alt="" class="w-10 h-10 mb-3" />
+      </div>
+      <span class="text-xl font-bold text-gray-900"
+        >{{currentTempature}} °C</span
+      >
+    </div>
+    <div
+      class="bg-blue-100 rounded-xl flex flex-col items-center justify-center py-3"
+    >
+      <div
+        class="font-medium leading-6 text-gray-900 text-lg my-2 flex items-center gap-2"
+      >
+        <span>Thời gian còn lại</span>
+        <img src="/assets/images/stopwatch.png" alt="" class="w-10 h-10 mb-3" />
+      </div>
+      <span class="text-xl font-bold text-gray-900">
+        {{ currentSetting.time | function : getTimeOut : (timer$ | async) }}
+      </span>
+    </div>
+  </div>
+  <div class="mt-10">
+    <button
+      type="submit"
+      [disabled]="!isStarting"
+      (click)="onEnd()"
+      class="flex w-full max-w-[300px] mx-auto justify-center rounded-md bg-red-500 px-3 py-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+    >
+      Kết thúc
+    </button>
+  </div>
+  }@else {
+  <div class="mx-auto flex flex-col items-center justify-center mt-20">
+    <div>
+      <img src="assets/images/hanging.png" alt="" class="w-40 h-40" />
+    </div>
+    <h3 class="mt-4 text-3xl font-bold text-red-400">
+      Hệ thống chưa hoạt động
+    </h3>
+    <a
+    [routerLink]="'/setting'"
+      class="cursor-pointer px-5 py-3 rounded-lg bg-blue-400 mt-10 text-white font-medium flex items-center"
+    >
+      <svg
+        class="w-6 h-6 text-white dark:text-white"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M5 12h14M5 12l4-4m-4 4 4 4"
+        />
+      </svg>
+      <span class="ml-1">Quay lại thiết lập</span>
+    </a>
+  </div>
+  }
+</div>
+
+<app-popup-container-component
+  [title]="'Kết thúc'"
+  [(visible)]="isShowPopupConfirm"
+>
+  <div class="p-5">
+    <h1 class="text-gray-900 font-medium text-xl">
+      Bạn có muốn kết thúc quá trình?
+    </h1>
+    <div class="flex items-center justify-center mt-4 gap-4">
+      <button
+        class="px-5 py-2 rounded-lg bg-blue-500 text-white"
+        (click)="end()"
+      >
+        Kết thúc
+      </button>
+      <button
+        class="px-5 py-2 rounded-lg bg-red-500 text-white"
+        (click)="closePopup()"
+      >
+        Huỷ
+      </button>
+    </div>
+  </div>
+</app-popup-container-component>

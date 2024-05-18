@@ -36,20 +36,12 @@ export class LoginComponent {
 
   isError = false;
 
-  // private auth: Auth = inject(Auth);
-  // user$ = user(this.auth);
   userSubscription: Subscription;
   constructor(private _router: Router, private authFirebase: AngularFireAuth){
-  //   this.userSubscription = this.user$.subscribe((aUser: User | null) => {
-  //     //handle user state changes here. Note, that user will be null if there is no currently logged in user.
-  //  console.log(aUser);
-  //  if(aUser?.uid){
-  //    this._router.navigate(['/home']);
-  //  }
     this.authFirebase.authState.subscribe((user) => {
       if(user?.uid){
-           this._router.navigate(['/home']);
-        }
+           this._router.navigate(['/']);
+      }
     })
   }
 
@@ -58,15 +50,16 @@ export class LoginComponent {
   }
 
   isValidPassword(s: string) {
-    return s.split(" ").length === s.length && s.length > 6
+    return s.trim().length === s.length && s.length > 6
   }
 
   onSubmit(event: Event){
     event.preventDefault()
-    console.log(this.loginInfo)
+   
 
     const isEmailValid = this.isValidEmail(this.loginInfo.email);
     const isPasswordVaild = this.isValidPassword(this.loginInfo.password)
+    console.log("isEmailValid",isEmailValid, "isPasswordVaild",isPasswordVaild)
 
     if(!isEmailValid || !isPasswordVaild){
       return;
@@ -80,6 +73,18 @@ export class LoginComponent {
     // .catch(() => {
     //   this.isError = true;
     // })
+
+    this.authFirebase.signInWithEmailAndPassword(
+      this.loginInfo.email,
+      this.loginInfo.password
+    ).then((data) => {
+      this.isError = false;
+      this._router.navigate(['/']);
+      console.log(this.loginInfo,data)
+    })
+    .catch(() => {
+      this.isError = true;
+    })
 
   }
   
