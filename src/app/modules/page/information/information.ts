@@ -7,8 +7,10 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { SpecificationSetting } from '../../models/setting.model';
 import { SensorRealtimeService } from '../../../services/sensor-realtime.service';
 import { FunctionPipe } from '../../../pipes';
-import { Timestamp } from "firebase/firestore"
+import { Timestamp } from 'firebase/firestore';
 import { Router, RouterModule } from '@angular/router';
+import { ChartConfiguration, ChartOptions, ChartType } from "chart.js";
+
 
 @Component({
   selector: 'app-information-component',
@@ -29,8 +31,34 @@ export class InformationComponent implements OnDestroy {
   currentSettingIndex: number;
   phaseTimeMax: number;
 
-  timer$ = interval(1000).pipe(takeUntil(this._onDestroy$))
-  isUpdatedData = false
+  timer$ = interval(1000).pipe(takeUntil(this._onDestroy$));
+  isUpdatedData = false;
+
+  public lineChartData: ChartConfiguration<'line'>['data'] = {
+    labels: [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July'
+    ],
+    datasets: [
+      {
+        data: [ 65, 59, 80, 81, 56, 55, 40 ],
+        label: 'Series A',
+        fill: true,
+        tension: 0.5,
+        borderColor: 'black',
+        backgroundColor: 'rgba(255,0,0,0.3)'
+      }
+    ]
+  };
+  public lineChartOptions: ChartOptions<'line'> = {
+    responsive: false
+  };
+  public lineChartLegend = true;
 
   constructor(
     private systemRealtimeService: SystemRealtimeService,
@@ -61,11 +89,16 @@ export class InformationComponent implements OnDestroy {
         .subscribe((data: any) => {
           console.log(data);
 
-          this.phaseTimeMax = new Timestamp(data.startedAt.seconds,data.startedAt.nanoseconds).toDate().getTime();
+          this.phaseTimeMax = new Timestamp(
+            data.startedAt.seconds,
+            data.startedAt.nanoseconds
+          )
+            .toDate()
+            .getTime();
           this.settings = data?.settings as SpecificationSetting[];
           this.currentSetting = data.settings.find(
             (_: SpecificationSetting, index: number) => {
-                this.phaseTimeMax += _.time*60*1000;
+              this.phaseTimeMax += _.time * 60 * 1000;
               if (!_.isFinish) {
                 this.currentSettingIndex = index;
               }
@@ -73,7 +106,7 @@ export class InformationComponent implements OnDestroy {
             }
           );
 
-          this.isUpdatedData = false
+          this.isUpdatedData = false;
         });
     }
   }
@@ -90,6 +123,7 @@ export class InformationComponent implements OnDestroy {
     this.systemRealtimeService.end().then(() => {
       this.isStarting = false;
       localStorage.removeItem('settingId');
+      this.router.navigate(['/setting']) 
     });
   }
 
@@ -97,64 +131,73 @@ export class InformationComponent implements OnDestroy {
     return this.countdownFromNow(this.phaseTimeMax);
   };
 
-   countdownFromNow(pastTime: number) {
-  
+  countdownFromNow(pastTime: number) {
     // Get the current time in milliseconds
     const now = Date.now();
-  
+
     // Calculate the difference between current time and past time in milliseconds
     const difference = pastTime - now;
-  
+
     // Check if the past time has already passed (negative difference)
     if (difference <= 0) {
-        if(this.isUpdatedData){
-            return;
-        }
-        const documentId = localStorage.getItem('settingId');
-        if(this.currentSettingIndex === this.settings.length - 1){
-            this.systemRealtimeService.end().then(() => {
-                this.router.navigate(['/setting'])
-                localStorage.removeItem('settingId')
-            })
-            this.fireStore.doc(`settings/${documentId}`).update({isFinised: true})
-            return;
-        }
+      if (this.isUpdatedData) {
+        return;
+      }
+      const documentId = localStorage.getItem('settingId');
+      if (this.currentSettingIndex === this.settings.length - 1) {
+        this.systemRealtimeService.end().then(() => {
+          this.router.navigate(['/setting']);
+          localStorage.removeItem('settingId');
+        });
+        this.fireStore
+          .doc(`settings/${documentId}`)
+          .update({ isFinised: true });
+        return;
+      }
 
-     
-        if(documentId){
-            this.isUpdatedData = true;
-            this.fireStore.doc(`settings/${documentId}`).update({
-                settings: this.settings.map(_ => {
-                    if(_.id === this.currentSetting.id){
-                        return ({..._, isFinish: true})
-                    }
+      if (documentId) {
+        this.isUpdatedData = true;
 
-                    return _
-                })
-            }).then(() => {
-               
-            })
-        }
+        this.systemRealtimeService.update(
+          Number(this.settings[this.currentSettingIndex + 1].temperature),
+          Number(this.settings[this.currentSettingIndex + 1].time),
+        ).then()
 
-      return
+        this.fireStore
+          .doc(`settings/${documentId}`)
+          .update({
+            settings: this.settings.map((_) => {
+              if (_.id === this.currentSetting.id) {
+                return { ..._, isFinish: true };
+              }
+
+              return _;
+            }),
+          })
+          .then(() => {});
+
+       
+      }
+
+      return;
     }
-  
+
     // Calculate remaining time in seconds, minutes, hours, and days
     const seconds = Math.floor((difference / 1000) % 60);
     const minutes = Math.floor((difference / (1000 * 60)) % 60);
     const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-  
+
     // Format the countdown string with leading zeros for aesthetics
-    const formattedSeconds = seconds.toString().padStart(2, "0");
-    const formattedMinutes = minutes.toString().padStart(2, "0");
-    const formattedHours = hours.toString().padStart(2, "0");
-  
+    const formattedSeconds = seconds.toString().padStart(2, '0');
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedHours = hours.toString().padStart(2, '0');
+
     // Build the countdown string
-    let countdownString = "";
+    let countdownString = '';
     countdownString += `${formattedHours} : `;
     countdownString += `${formattedMinutes} : `;
     countdownString += `${formattedSeconds} `;
-  
+
     return countdownString;
   }
 

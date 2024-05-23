@@ -17,13 +17,14 @@
             *ngFor="let setting of settings; let index = index; let last = last; trackBy: trackByFunc"
             class="w-full gap-0"
           >
-            <div class="flex items-end">
+            <h2 *ngIf="settings.length > 1" class="text-xl font-bold text-black mb-2">Giai đoạn {{index + 1}}</h2>
+            <div class="flex items-end bg-green-200 p-4 rounded-lg">
               <div class="mr-6 w-[40%]">
                 <div class="flex items-center justify-between">
                   <label
                     for="text"
                     class="block font-medium leading-6 text-gray-900 text-lg"
-                    >Nhiệt độ giai đoạn {{index + 1}}</label
+                    >Nhiệt độ</label
                   >
                   <img
                     src="/assets/images/celcius.png"
@@ -40,7 +41,7 @@
                     autocomplete="text"
                     [(ngModel)]="setting.temperature"
                     required
-                    class="block text-lg w-full h-12 rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    class="block outline-none text-lg w-full h-12 rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
 
                   <span
@@ -55,7 +56,7 @@
                   <label
                     for="time"
                     class="block font-medium leading-6 text-gray-900 text-lg"
-                    >Thời gian giai đoạn {{index + 1}}</label
+                    >Thời gian</label
                   >
                   <img
                     src="/assets/images/chronometer.png"
@@ -72,7 +73,7 @@
                     autocomplete="current-time"
                     [(ngModel)]="setting.time"
                     required
-                    class="block w-full h-12 rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    class="block outline-none w-full h-12 rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                   <span
                     class="absolute top-3 right-8 text-sm font-normal text-gray-800"
@@ -92,9 +93,9 @@
 
             <div *ngIf="settings.length > 1 && !last" class="col-span-2">
               <img
-                src="assets/images/down-arrow.png"
+                src="assets/images/down-arrow-2.png"
                 alt=""
-                class="w-10 h-10 mx-auto"
+                class="w-10 h-10 relative -left-10"
               />
             </div>
           </div>

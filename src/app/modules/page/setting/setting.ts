@@ -11,7 +11,6 @@ import { Subject, takeUntil } from 'rxjs';
 import { SpecificationSetting } from '../../models/setting.model';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-setting-component',
   standalone: true,
@@ -38,11 +37,11 @@ export class SettingComponent implements OnDestroy {
     this.settingsRef = this.firestore.collection('settings');
 
     this.systemRealtimeService
-      .getStatus().pipe(takeUntil(this._onDestroy$))
+      .getStatus()
+      .pipe(takeUntil(this._onDestroy$))
       .subscribe((data) => {
         this.isStarting = data[0].value;
       });
-
   }
 
   ngOnDestroy(): void {
@@ -84,17 +83,23 @@ export class SettingComponent implements OnDestroy {
         startedAt: new Date(),
       })
       .then((data) => {
-        localStorage.setItem('settingId',data.id)
+        localStorage.setItem('settingId', data.id);
 
-        this.systemRealtimeService.start().then(() => {
-            this.isStarting = true
-            this.router.navigate(['/info'])
-        }).catch(() => {
+        this.systemRealtimeService
+          .start(
+            Number(this.settings[0].temperature),
+            Number(this.settings[0].time)
+          )
+          .then(() => {
+            this.isStarting = true;
+            this.router.navigate(['/info']);
+          })
+          .catch(() => {
             this.isStarting = false;
-            localStorage.removeItem('settingId')
-        })
-    });
-}
+            localStorage.removeItem('settingId');
+          });
+      });
+  }
 
   trackByFunc = (index: number) => {
     return `${index}`;
