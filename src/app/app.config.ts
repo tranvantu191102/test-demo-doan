@@ -9,13 +9,11 @@ import { environment } from '../environment';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import {AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes), 
     provideHttpClient(),
-    provideCharts(withDefaultRegisterables()),
     importProvidersFrom([
       AngularFireModule.initializeApp(environment.firebase),
       AngularFireAuth,
