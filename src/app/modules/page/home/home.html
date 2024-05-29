@@ -1,6 +1,7 @@
 <aside
   id="default-sidebar"
   class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+  [ngClass]="{'translate-x-0': isShowSidebar}"
   aria-label="Sidebar"
 >
   <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
@@ -9,6 +10,7 @@
       <li>
         <a
           href="#"
+          [ngClass]="{'pointer-events-none': isStarting}"
           [routerLink]="'setting'"
           [routerLinkActive]="'bg-blue-200'"
           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -32,6 +34,7 @@
         <a
           href="#"
           [routerLink]="'info'"
+          [ngClass]="{'pointer-events-none': isStarting}"
           [routerLinkActive]="'bg-blue-200'"
           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
         >
@@ -56,6 +59,7 @@
       <li>
         <a
           href="#"
+          [ngClass]="{'pointer-events-none': isStarting}"
           [routerLink]="'history'"
           [routerLinkActive]="'bg-blue-200'"
           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -78,6 +82,7 @@
       <!-- Đăng xuất -->
       <li>
         <div
+          [ngClass]="{'pointer-events-none': isStarting}"
           class="cursor-pointer flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
           (click)="onShowConfirmPopup()"
         >
@@ -101,11 +106,38 @@
           <span class="flex-1 ms-3 whitespace-nowrap">Đăng xuất</span>
         </div>
       </li>
+      <li
+        class="flex sm:hidden items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+        (click)="hideSidebar()"
+      >
+        Đóng
+      </li>
     </ul>
   </div>
 </aside>
 
-<div class="ml-64">
+<div class="ml-0 sm:ml-64 relative">
+  <div
+    class="absolute sm:hidden top-2 left-2 cursor-pointer"
+    (click)="showSidebar()"
+  >
+    <svg
+      class="w-6 h-6 text-gray-800 dark:text-white"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-width="2"
+        d="M5 7h14M5 12h14M5 17h14"
+      />
+    </svg>
+  </div>
   <router-outlet></router-outlet>
 </div>
 
@@ -114,12 +146,11 @@
   [(visible)]="isShowPopupConfirm"
 >
   <div class="p-5">
-    <h1 class="text-gray-900 font-medium text-xl">
-      Bạn có đăng xuất không?
-    </h1>
+    <h1 class="text-gray-900 font-medium text-xl">Bạn có đăng xuất không?</h1>
     <div class="flex items-center justify-center mt-4 gap-4">
-      <button class="px-5 py-2 rounded-lg bg-blue-500 text-white"
-      (click)="onSignOut()"
+      <button
+        class="px-5 py-2 rounded-lg bg-blue-500 text-white"
+        (click)="onSignOut()"
       >
         Đăng xuất
       </button>

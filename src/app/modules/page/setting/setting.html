@@ -1,7 +1,7 @@
 <div class="" [ngClass]="{'opacity-50 pointer-events-none' : isStarting}">
   <form class="space-y-6 px-6 pt-10" action="#" method="POST">
-    <div class="flex items-start gap-8">
-      <div class="!mt-0 w-32">
+    <div class="flex sm:flex-row flex-col items-start gap-8">
+      <div class="!mt-0 w-32 mx-auto sm:mx-0">
         <button
           type="submit"
           (click)="onStart($event)"
@@ -11,25 +11,25 @@
         </button>
       </div>
 
-      <div class="flex-1">
+      <div class="w-full sm:flex-1">
         <div class="w-full flex flex-col gap-0">
           <div
             *ngFor="let setting of settings; let index = index; let last = last; trackBy: trackByFunc"
             class="w-full gap-0"
           >
-            <h2 *ngIf="settings.length > 1" class="text-xl font-bold text-black mb-2">Giai đoạn {{index + 1}}</h2>
-            <div class="flex items-end bg-green-200 p-4 rounded-lg">
-              <div class="mr-6 w-[40%]">
+            <h2 *ngIf="settings.length > 1" class="text-base sm:text-xl font-bold text-black mb-2">Giai đoạn {{index + 1}}</h2>
+            <div class="flex sm:flex-row flex-col items-end bg-green-200 p-2 sm:p-4 rounded-lg">
+              <div class="sm:mr-6 w-full sm:w-[40%]">
                 <div class="flex items-center justify-between">
                   <label
                     for="text"
-                    class="block font-medium leading-6 text-gray-900 text-lg"
+                    class="block font-medium leading-6 text-gray-900  text-base sm:text-lg"
                     >Nhiệt độ</label
                   >
                   <img
                     src="/assets/images/celcius.png"
                     alt=""
-                    class="w-10 h-10 mb-1"
+                    class="w-8 sm:w-10 h-8 sm:h-10 mb-1"
                   />
                 </div>
 
@@ -41,7 +41,7 @@
                     autocomplete="text"
                     [(ngModel)]="setting.temperature"
                     required
-                    class="block outline-none text-lg w-full h-12 rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    class="block outline-none text-lg w-full h-10 sm:h-12 rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
 
                   <span
@@ -51,17 +51,17 @@
                 </div>
               </div>
 
-              <div class="mr-6 w-[40%]">
+              <div class="sm:mr-6  w-full sm:w-[40%]">
                 <div class="flex items-center justify-between">
                   <label
                     for="time"
-                    class="block font-medium leading-6 text-gray-900 text-lg"
+                    class="block font-medium leading-6 text-gray-900 text-base sm:text-lg"
                     >Thời gian</label
                   >
                   <img
                     src="/assets/images/chronometer.png"
                     alt=""
-                    class="w-10 h-10 mb-1"
+                    class="w-8 sm:w-10 h-8 sm:h-10 mb-1"
                   />
                 </div>
 
@@ -73,7 +73,7 @@
                     autocomplete="current-time"
                     [(ngModel)]="setting.time"
                     required
-                    class="block outline-none w-full h-12 rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    class="block outline-none w-full h-10 sm:h-12 rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                   <span
                     class="absolute top-3 right-8 text-sm font-normal text-gray-800"
@@ -81,9 +81,9 @@
                   >
                 </div>
               </div>
-              <div class="w-[15%]" *ngIf="index > 0">
+              <div class="mx-auto sm:mx-0 mt-1 sm:mt-0 w-[15%]" *ngIf="index > 0">
                 <button
-                  class="px-10 py-2 bg-red-400 text-white rounded-lg"
+                  class="px-4 py-2 bg-red-400 text-white rounded-lg mx-auto sm:mx-0"
                   (click)="removeItem(setting)"
                 >
                   Xoá
@@ -95,7 +95,7 @@
               <img
                 src="assets/images/down-arrow-2.png"
                 alt=""
-                class="w-10 h-10 relative -left-10"
+                class="w-10 h-10 relative sm:-left-10 left-1/2 -translate-x-1/2"
               />
             </div>
           </div>
