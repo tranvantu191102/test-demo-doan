@@ -9,7 +9,6 @@ import { SensorRealtimeService } from '../../../services/sensor-realtime.service
 import { FunctionPipe } from '../../../pipes';
 import { Timestamp } from 'firebase/firestore';
 import { Router, RouterModule } from '@angular/router';
-import { ChartConfiguration, ChartOptions, ChartType } from "chart.js";
 
 
 @Component({
@@ -34,31 +33,6 @@ export class InformationComponent implements OnDestroy {
   timer$ = interval(1000).pipe(takeUntil(this._onDestroy$));
   isUpdatedData = false;
 
-  public lineChartData: ChartConfiguration<'line'>['data'] = {
-    labels: [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July'
-    ],
-    datasets: [
-      {
-        data: [ 65, 59, 80, 81, 56, 55, 40 ],
-        label: 'Series A',
-        fill: true,
-        tension: 0.5,
-        borderColor: 'black',
-        backgroundColor: 'rgba(255,0,0,0.3)'
-      }
-    ]
-  };
-  public lineChartOptions: ChartOptions<'line'> = {
-    responsive: false
-  };
-  public lineChartLegend = true;
 
   constructor(
     private systemRealtimeService: SystemRealtimeService,
