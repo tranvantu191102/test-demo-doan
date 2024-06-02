@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, QueryList, ViewChild } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import {
   AngularFirestore,
@@ -18,6 +18,9 @@ import { Router } from '@angular/router';
   imports: [CommonModule, FormsModule],
 })
 export class SettingComponent implements OnDestroy {
+  @ViewChild('#inputTemperature') inputTemperature: QueryList<HTMLInputElement>; 
+  @ViewChild('#inputTime') inputTime: QueryList<HTMLInputElement>; 
+
   settingsRef: AngularFirestoreCollection<{
     settings: SpecificationSetting[];
     isFinished: boolean;
@@ -41,6 +44,10 @@ export class SettingComponent implements OnDestroy {
       .pipe(takeUntil(this._onDestroy$))
       .subscribe((data) => {
         this.isStarting = data[0].value;
+
+        if(this.isStarting){
+          this.router.navigate(['/info'])
+        }
       });
   }
 
@@ -52,20 +59,20 @@ export class SettingComponent implements OnDestroy {
 
   settings: SpecificationSetting[] = [
     {
-      temperature: 0,
-      time: 0,
+      temperature: null,
+      time: null,
       id: Math.floor(Math.random() * 99999999999),
       isFinish: false,
     },
   ];
 
   onAddSetting() {
-    this.settings.push({
-      temperature: 0,
-      time: 0,
+    this.settings = [...this.settings,{
+      temperature: null,
+      time: null,
       id: Math.floor(Math.random() * 99999999999),
       isFinish: false,
-    });
+    }]
   }
 
   onStart(event: Event) {

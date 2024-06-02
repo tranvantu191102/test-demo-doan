@@ -1,6 +1,6 @@
 export class  SpecificationSetting {
-  temperature: number;
-  time: number;
+  temperature: number | null;
+  time: number | null;
   id: number;
   isFinish: boolean;
 

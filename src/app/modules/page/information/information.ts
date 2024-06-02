@@ -61,7 +61,6 @@ export class InformationComponent implements OnDestroy {
         .doc(documentId)
         .valueChanges()
         .subscribe((data: any) => {
-          console.log(data);
 
           this.phaseTimeMax = new Timestamp(
             data.startedAt.seconds,
@@ -72,7 +71,7 @@ export class InformationComponent implements OnDestroy {
           this.settings = data?.settings as SpecificationSetting[];
           this.currentSetting = data.settings.find(
             (_: SpecificationSetting, index: number) => {
-              this.phaseTimeMax += _.time * 60 * 1000;
+              this.phaseTimeMax += (_.time as number) * 60 * 1000;
               if (!_.isFinish) {
                 this.currentSettingIndex = index;
               }
@@ -120,7 +119,7 @@ export class InformationComponent implements OnDestroy {
       const documentId = localStorage.getItem('settingId');
       if (this.currentSettingIndex === this.settings.length - 1) {
         this.systemRealtimeService.end().then(() => {
-          this.router.navigate(['/setting']);
+          // this.router.navigate(['/setting']);
           localStorage.removeItem('settingId');
         });
         this.fireStore

@@ -18,7 +18,7 @@
             class="w-full gap-0"
           >
             <h2 *ngIf="settings.length > 1" class="text-base sm:text-xl font-bold text-black mb-2">Giai đoạn {{index + 1}}</h2>
-            <div class="flex sm:flex-row flex-col items-end bg-green-200 p-2 sm:p-4 rounded-lg">
+            <div class="flex sm:flex-row flex-col items-start bg-green-100 p-2 sm:p-4 rounded-lg">
               <div class="sm:mr-6 w-full sm:w-[40%]">
                 <div class="flex items-center justify-between">
                   <label
@@ -35,14 +35,24 @@
 
                 <div class="mt-1 relative">
                   <input
+                    #inputTemperature="ngModel"
                     id="text"
                     name="text"
                     type="number"
+                    min="0"
+                    max="200"
                     autocomplete="text"
                     [(ngModel)]="setting.temperature"
                     required
+                    placeholder="0 - 200 °C"
                     class="block outline-none text-lg w-full h-10 sm:h-12 rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
+
+                  <div *ngIf="inputTemperature.invalid && (inputTemperature.dirty || inputTemperature.touched)">
+                    <small *ngIf="inputTemperature.errors?.['required']" class="text-red-500">Nhập nhiệt độ là bắt buộc.</small>
+                    <small *ngIf="inputTemperature.errors?.['min']" class="text-red-500">Nhiệt độ phải lớn hơn 0</small>
+                    <small *ngIf="inputTemperature.errors?.['max']" class="text-red-500">Nhiệt độ phải nhỏ hơn hoặc bằng 200 °C</small>
+                  </div>
 
                   <span
                     class="absolute top-3 right-8 text-sm font-normal text-gray-800"
@@ -67,14 +77,23 @@
 
                 <div class="mt-1 relative">
                   <input
+                  #inputTime="ngModel"
                     id=""
                     name="time"
                     type="number"
+                    min="0"
+                    max="60"
                     autocomplete="current-time"
                     [(ngModel)]="setting.time"
                     required
+                    placeholder="0 - 60 phút"
                     class="block outline-none w-full h-10 sm:h-12 rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
+                  <div *ngIf="inputTime.invalid && (inputTime.dirty || inputTime.touched)">
+                    <small *ngIf="inputTime.errors?.['required']" class="text-red-500">Nhập thời gian là bắt buộc.</small>
+                    <small *ngIf="inputTime.errors?.['min']" class="text-red-500">Thời gian phải lớn hơn 0</small>
+                    <small *ngIf="inputTime.errors?.['max']" class="text-red-500">Thời gian phải nhỏ hơn hoặc bằng 60 phút</small>
+                  </div>
                   <span
                     class="absolute top-3 right-8 text-sm font-normal text-gray-800"
                     >( phút )</span

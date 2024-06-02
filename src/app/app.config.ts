@@ -20,19 +20,6 @@ export const appConfig: ApplicationConfig = {
       AngularFireDatabaseModule,
       AngularFirestoreModule
     ])
-    // importProvidersFrom(
-    //   provideFirebaseApp(() => initializeApp(environment.firebase))
-    // ),
-    // importProvidersFrom(
-    //   provideDatabase(() => getDatabase())
-    // ),
-    // importProvidersFrom(
-    //   provideAuth(() => getAuth())
-    // ),
-    // importProvidersFrom(
-    //   provideFirestore(() => getFirestore())
-    // ),
-    
   ],
   
 };
