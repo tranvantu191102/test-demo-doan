@@ -2,17 +2,17 @@
   <h1 class="text-center text-2xl font-bold">Lịch sử</h1>
 
   <table
-    class="w-full mt-10 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+    class="w-full min-w-[720px] mt-10 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
   >
     <thead
       class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
     >
       <tr>
-        <th scope="col" class="px-6 py-3">Số thứ tự</th>
-        <th scope="col" class="px-6 py-3">Ngày</th>
-        <th scope="col" class="px-6 py-3">Nhiệt độ</th>
-        <th scope="col" class="px-6 py-3">Thời gian</th>
-        <th scope="col" class="px-6 py-3">Điện năng tiêu thụ</th>
+        <th scope="col" class="px-2 py-1 sm:px-6 sm:py-3">Số thứ tự</th>
+        <th scope="col" class="px-2 py-1 sm:px-6 sm:py-3">Ngày</th>
+        <th scope="col" class="px-2 py-1 sm:px-6 sm:py-3">Nhiệt độ</th>
+        <th scope="col" class="px-2 py-1 sm:px-6 sm:py-3">Thời gian</th>
+        <th scope="col" class="px-2 py-1 sm:px-6 sm:py-3">Điện năng tiêu thụ</th>
       </tr>
     </thead>
     <tbody>
@@ -22,18 +22,18 @@
       >
       <th
           scope="row"
-          class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          class="p-2 sm:px-6 sm:py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
         >
           {{index + 1}}
         </th>
         <th
           scope="row"
-          class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          class="p-2 sm:px-6 sm:py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
         >
           {{data.startedAt | date: 'dd'}}/{{data.startedAt |
           date:'MM'}}/{{data.startedAt | date: 'yyyy'}}
         </th>
-        <td class="px-6 py-4">
+        <td class="p-2 sm:px-6 sm:py-4">
           @if (data.settings.length === 1) {
           <p>{{data.settings[0].temperature}} °C</p>
           }@else {
@@ -44,7 +44,7 @@
           </div>
           }
         </td>
-        <td class="px-6 py-4">
+        <td class="p-2 sm:px-6 sm:py-4">
           @if (data.settings.length === 1) {
           <p>{{data.settings[0].time}} phút</p>
           }@else {
@@ -53,7 +53,7 @@
           </div>
           }
         </td>
-        <td class="px-6 py-4">
+        <td class="p-2 sm:px-6 sm:py-4">
           <span class="italic text-sm">Sắp ra mắt</span>
         </td>
       </tr>
